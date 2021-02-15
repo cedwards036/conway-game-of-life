@@ -1,0 +1,98 @@
+import nextBoard, { cellValue, Cell } from "./game-board";
+
+describe("nextBoard", () => {
+  test("the next board of an empty board is an empty board", () => {
+    expect(nextBoard([])).toEqual([]);
+    expect(nextBoard([[]])).toEqual([[]]);
+  });
+
+  test("the next board of an entirely dead board is an entirely dead board", () => {
+    const deadBoard: cellValue[][] = [
+      [0, 0],
+      [0, 0],
+    ];
+    expect(nextBoard(deadBoard)).toEqual(deadBoard);
+  });
+
+  test("Any living cell with fewer than two live neighbors dies", () => {
+    const board: cellValue[][] = [
+      [0, 1],
+      [1, 0],
+    ];
+    const expected: cellValue[][] = [
+      [0, 0],
+      [0, 0],
+    ];
+    expect(nextBoard(board)).toEqual(expected);
+  });
+
+  test("Any living cell with two live neighbors survives", () => {
+    const board: cellValue[][] = [
+      [1, 1, 0],
+      [0, 1, 0],
+      [0, 0, 0],
+    ];
+    expect(nextBoard(board)[0][1]).toEqual(1);
+  });
+});
+
+test("Any living cell with three live neighbors survives", () => {
+  const board: cellValue[][] = [
+    [1, 1, 1],
+    [0, 1, 0],
+    [0, 0, 0],
+  ];
+  expect(nextBoard(board)[0][1]).toBe(1);
+});
+
+test("Any living cell with more than three live neighbors dies", () => {
+  const board: cellValue[][] = [
+    [1, 1, 0],
+    [1, 1, 0],
+    [1, 0, 0],
+  ];
+  expect(nextBoard(board)[1][0]).toBe(0);
+});
+
+test("Any dead cell with three live neighbors becomes alive", () => {
+  const board: cellValue[][] = [
+    [1, 1, 0],
+    [1, 1, 0],
+    [1, 0, 0],
+  ];
+  expect(nextBoard(board)[2][1]).toBe(1);
+});
+
+describe("Cell.liveNeighborCount", () => {
+  test("returns 0 when cell coordinates are invalid", () => {
+    expect(new Cell([], 0, 0).liveNeighborCount).toBe(0);
+    expect(new Cell([[]], 0, 0).liveNeighborCount).toBe(0);
+  });
+
+  test("returns 0 when cell has no living neighbors", () => {
+    expect(new Cell([[0]], 0, 0).liveNeighborCount).toBe(0);
+  });
+
+  test("counts live neighbors directly above and beside the given cell", () => {
+    const board: cellValue[][] = [
+      [0, 1, 0],
+      [1, 0, 1],
+      [0, 1, 0],
+    ];
+    expect(new Cell(board, 1, 1).liveNeighborCount).toBe(4);
+  });
+
+  test("counts live neighbors diagnally adjacent to the given cell", () => {
+    const board: cellValue[][] = [
+      [1, 0, 1],
+      [0, 1, 0],
+      [1, 0, 1],
+    ];
+    expect(new Cell(board, 1, 1).liveNeighborCount).toBe(4);
+  });
+
+  test("neighbors outside of the array bounds count as 0", () => {
+    const board: cellValue[][] = [[0]];
+    expect(new Cell(board, 0, 0).liveNeighborCount).toBe(0);
+  });
+});
