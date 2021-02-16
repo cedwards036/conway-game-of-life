@@ -1,7 +1,16 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
+
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
+afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
 
 test("tick count initializes to 0", () => {
   render(<App />);
@@ -21,6 +30,18 @@ test("clicking a living cell removes the 'alive' class from that cell", () => {
   expect(screen.getByTestId("c00")).not.toHaveClass("alive");
 });
 
+test("clicking a cell while the game is playing pauses the game", () => {
+  render(<App />);
+  userEvent.click(screen.getByRole("button", { name: "Play" }));
+  // @ts-ignore
+  act(() => jest.advanceTimersByTime(1500));
+  userEvent.click(screen.getByTestId("c00"));
+  expect(screen.getByRole("button", { name: "Play" })).toHaveTextContent(
+    "Play"
+  );
+  expect(screen.getByTestId("tickCount")).toHaveTextContent("3");
+});
+
 test("clicking 'Next State' button advances the game state", () => {
   render(<App />);
   userEvent.click(screen.getByTestId("c00"));
@@ -35,6 +56,30 @@ test("clicking 'Next State' button increments the tick count", () => {
   userEvent.click(screen.getByRole("button", { name: "Next State" }));
   userEvent.click(screen.getByRole("button", { name: "Next State" }));
   expect(screen.getByTestId("tickCount")).toHaveTextContent("2");
+});
+
+test("clicking 'Play' button starts automatic updates to tick count and game state", () => {
+  render(<App />);
+  userEvent.click(screen.getByTestId("c00"));
+  userEvent.click(screen.getByTestId("c01"));
+  userEvent.click(screen.getByTestId("c10"));
+  userEvent.click(screen.getByRole("button", { name: "Play" }));
+  // @ts-ignore
+  act(() => jest.advanceTimersByTime(500));
+  expect(screen.getByTestId("tickCount")).toHaveTextContent("1");
+  expect(screen.getByTestId("c11")).toHaveClass("alive");
+});
+
+test("clicking 'Clear' button stops the game", () => {
+  render(<App />);
+  userEvent.click(screen.getByRole("button", { name: "Play" }));
+  // @ts-ignore
+  act(() => jest.advanceTimersByTime(1500));
+  userEvent.click(screen.getByRole("button", { name: "Clear" }));
+  expect(screen.getByRole("button", { name: "Play" })).toHaveTextContent(
+    "Play"
+  );
+  expect(screen.getByTestId("tickCount")).toHaveTextContent("0");
 });
 
 test("clicking 'Clear' button kills all living cells", () => {

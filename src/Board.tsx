@@ -6,9 +6,10 @@ import { gameBoard } from "./lib/game-board";
 type BoardProps = {
   board: gameBoard;
   toggleCell: toggleCellType;
+  pauseGame: () => void;
 };
 
-function Board({ board, toggleCell }: BoardProps) {
+function Board({ board, toggleCell, pauseGame }: BoardProps) {
   const cells: React.ReactNode[] = board.map((row, i) =>
     row.map((cellValue, j) => {
       return (
@@ -17,6 +18,7 @@ function Board({ board, toggleCell }: BoardProps) {
           row={i}
           col={j}
           toggleCell={toggleCell}
+          pauseGame={pauseGame}
           key={`${i}${j}`}
         />
       );

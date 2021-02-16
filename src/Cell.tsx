@@ -9,13 +9,18 @@ type CellProps = {
   row: number;
   col: number;
   toggleCell: toggleCellType;
+  pauseGame: () => void;
 };
 
-function Cell({ value, row, col, toggleCell }: CellProps) {
+function Cell({ value, row, col, toggleCell, pauseGame }: CellProps) {
+  function handleClick() {
+    toggleCell(row, col);
+    pauseGame();
+  }
   return (
     <div
       className={"cell" + (value === 1 ? " alive" : "")}
-      onClick={() => toggleCell(row, col)}
+      onClick={handleClick}
       data-testid={`c${row}${col}`}
     ></div>
   );
