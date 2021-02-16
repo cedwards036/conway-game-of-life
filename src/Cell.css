@@ -1,8 +1,10 @@
+@import "common.css";
+
 .cell {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
-  width: 30px;
-  height: 30px;
+  width: var(--cell-size);
+  height: var(--cell-size);
   cursor: pointer;
 }
 

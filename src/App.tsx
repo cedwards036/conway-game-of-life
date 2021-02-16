@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { gameBoard, cellValue, updateBoard } from "./lib/game-board";
+import { cellValue, updateBoard, createEmptyBoard } from "./lib/game-board";
 import Board from "./Board";
 
+const BOARD_SIZE = 15;
+
 function App() {
-  const initialBoard: gameBoard = [
-    [0, 0, 0, 1],
-    [0, 1, 1, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 0],
-  ];
-  const [board, setBoard] = useState(initialBoard);
+  const [board, setBoard] = useState(createEmptyBoard(BOARD_SIZE, BOARD_SIZE));
 
   function toggleCell(cellRow: number, cellCol: number): void {
     const newValue: cellValue = board[cellRow][cellCol] === 1 ? 0 : 1;

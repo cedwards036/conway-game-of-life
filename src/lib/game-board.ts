@@ -19,6 +19,12 @@ export function updateBoard(
   return boardCopy;
 }
 
+export function createEmptyBoard(width: number, height: number): gameBoard {
+  return Array(height)
+    .fill(0)
+    .map(() => Array(width).fill(0));
+}
+
 export class Cell {
   private board: gameBoard;
   private row: number;

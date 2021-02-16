@@ -1,8 +1,10 @@
+@import "common.css";
+
 .board {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 124px;
+  width: calc((var(--cell-size) + 1px) * var(--board-width));
   border-top: 4px solid black;
   border-right: 3px solid black;
   border-bottom: 3px solid black;
