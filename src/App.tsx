@@ -7,6 +7,7 @@ import {
 } from "./lib/game-board";
 import Board from "./Board";
 import ControlPanel from "./ControlPanel";
+import "./App.css";
 
 const BOARD_SIZE = 15;
 
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <div className="app">
+      <header>Conway's Game of Life</header>
       <Board board={board} toggleCell={toggleCell} />
       <ControlPanel
         updateGameState={updateGameState}

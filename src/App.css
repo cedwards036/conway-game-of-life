@@ -3,3 +3,9 @@
   flex-direction: column;
   align-items: center;
 }
+
+.app header {
+  text-align: center;
+  font-size: 1.5em;
+  margin: 20px;
+}
