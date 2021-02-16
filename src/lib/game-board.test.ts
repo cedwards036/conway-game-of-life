@@ -1,4 +1,4 @@
-import nextBoard, { gameBoard, Cell, updateBoard } from "./game-board";
+import { nextBoard, gameBoard, Cell, updateBoard } from "./game-board";
 
 describe("nextBoard", () => {
   test("the next board of an empty board is an empty board", () => {

@@ -1,7 +1,7 @@
 export type cellValue = 0 | 1;
 export type gameBoard = cellValue[][];
 
-export default function nextBoard(board: gameBoard): gameBoard {
+export function nextBoard(board: gameBoard): gameBoard {
   return board.map((row, i) =>
     row.map((cell, j) => new Cell(board, i, j).nextValue)
   );
