@@ -1,4 +1,4 @@
-import nextBoard, { cellValue, Cell } from "./game-board";
+import nextBoard, { gameBoard, Cell } from "./game-board";
 
 describe("nextBoard", () => {
   test("the next board of an empty board is an empty board", () => {
@@ -7,7 +7,7 @@ describe("nextBoard", () => {
   });
 
   test("the next board of an entirely dead board is an entirely dead board", () => {
-    const deadBoard: cellValue[][] = [
+    const deadBoard: gameBoard = [
       [0, 0],
       [0, 0],
     ];
@@ -15,11 +15,11 @@ describe("nextBoard", () => {
   });
 
   test("Any living cell with fewer than two live neighbors dies", () => {
-    const board: cellValue[][] = [
+    const board: gameBoard = [
       [0, 1],
       [1, 0],
     ];
-    const expected: cellValue[][] = [
+    const expected: gameBoard = [
       [0, 0],
       [0, 0],
     ];
@@ -27,7 +27,7 @@ describe("nextBoard", () => {
   });
 
   test("Any living cell with two live neighbors survives", () => {
-    const board: cellValue[][] = [
+    const board: gameBoard = [
       [1, 1, 0],
       [0, 1, 0],
       [0, 0, 0],
@@ -37,7 +37,7 @@ describe("nextBoard", () => {
 });
 
 test("Any living cell with three live neighbors survives", () => {
-  const board: cellValue[][] = [
+  const board: gameBoard = [
     [1, 1, 1],
     [0, 1, 0],
     [0, 0, 0],
@@ -46,7 +46,7 @@ test("Any living cell with three live neighbors survives", () => {
 });
 
 test("Any living cell with more than three live neighbors dies", () => {
-  const board: cellValue[][] = [
+  const board: gameBoard = [
     [1, 1, 0],
     [1, 1, 0],
     [1, 0, 0],
@@ -55,7 +55,7 @@ test("Any living cell with more than three live neighbors dies", () => {
 });
 
 test("Any dead cell with three live neighbors becomes alive", () => {
-  const board: cellValue[][] = [
+  const board: gameBoard = [
     [1, 1, 0],
     [1, 1, 0],
     [1, 0, 0],
@@ -74,7 +74,7 @@ describe("Cell.liveNeighborCount", () => {
   });
 
   test("counts live neighbors directly above and beside the given cell", () => {
-    const board: cellValue[][] = [
+    const board: gameBoard = [
       [0, 1, 0],
       [1, 0, 1],
       [0, 1, 0],
@@ -83,7 +83,7 @@ describe("Cell.liveNeighborCount", () => {
   });
 
   test("counts live neighbors diagnally adjacent to the given cell", () => {
-    const board: cellValue[][] = [
+    const board: gameBoard = [
       [1, 0, 1],
       [0, 1, 0],
       [1, 0, 1],
@@ -92,7 +92,7 @@ describe("Cell.liveNeighborCount", () => {
   });
 
   test("neighbors outside of the array bounds count as 0", () => {
-    const board: cellValue[][] = [[0]];
+    const board: gameBoard = [[0]];
     expect(new Cell(board, 0, 0).liveNeighborCount).toBe(0);
   });
 });

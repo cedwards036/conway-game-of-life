@@ -1,9 +1,9 @@
 import React from "react";
 import "./Board.css";
 import Cell from "./Cell";
-import { cellValue } from "./lib/game-board";
+import { gameBoard } from "./lib/game-board";
 
-type BoardProps = { board: cellValue[][] };
+type BoardProps = { board: gameBoard };
 
 function Board({ board }: BoardProps) {
   const cells: React.ReactNode[] = board.map((row, i) =>

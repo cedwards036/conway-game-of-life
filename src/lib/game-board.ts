@@ -1,17 +1,18 @@
 export type cellValue = 0 | 1;
+export type gameBoard = cellValue[][];
 
-export default function nextBoard(board: cellValue[][]): cellValue[][] {
+export default function nextBoard(board: gameBoard): gameBoard {
   return board.map((row, i) =>
     row.map((cell, j) => new Cell(board, i, j).nextValue)
   );
 }
 
 export class Cell {
-  private board: cellValue[][];
+  private board: gameBoard;
   private row: number;
   private col: number;
 
-  constructor(board: cellValue[][], row: number, col: number) {
+  constructor(board: gameBoard, row: number, col: number) {
     this.board = board;
     this.row = row;
     this.col = col;
