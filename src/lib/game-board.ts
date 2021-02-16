@@ -7,6 +7,18 @@ export default function nextBoard(board: gameBoard): gameBoard {
   );
 }
 
+export function updateBoard(
+  board: gameBoard,
+  cellRow: number,
+  cellCol: number,
+  newValue: cellValue
+): gameBoard {
+  //thanks to https://stackoverflow.com/a/122704 for JSON deep-copy idea
+  const boardCopy: gameBoard = JSON.parse(JSON.stringify(board));
+  boardCopy[cellRow][cellCol] = newValue;
+  return boardCopy;
+}
+
 export class Cell {
   private board: gameBoard;
   private row: number;

@@ -1,4 +1,4 @@
-import nextBoard, { gameBoard, Cell } from "./game-board";
+import nextBoard, { gameBoard, Cell, updateBoard } from "./game-board";
 
 describe("nextBoard", () => {
   test("the next board of an empty board is an empty board", () => {
@@ -94,5 +94,26 @@ describe("Cell.liveNeighborCount", () => {
   test("neighbors outside of the array bounds count as 0", () => {
     const board: gameBoard = [[0]];
     expect(new Cell(board, 0, 0).liveNeighborCount).toBe(0);
+  });
+});
+
+describe("updateBoard", () => {
+  test("updates the given coordinates with the given new value", () => {
+    const board: gameBoard = [
+      [1, 0, 1],
+      [0, 1, 0],
+      [1, 0, 1],
+    ];
+    expect(updateBoard(board, 1, 2, 1)[1][2]).toBe(1);
+  });
+
+  test("returns a copy of the original board", () => {
+    const board: gameBoard = [
+      [1, 0, 1],
+      [0, 1, 0],
+      [1, 0, 1],
+    ];
+    updateBoard(board, 1, 2, 1);
+    expect(board[1][2]).toBe(0);
   });
 });
