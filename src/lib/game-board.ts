@@ -25,6 +25,20 @@ export function createEmptyBoard(width: number, height: number): gameBoard {
     .map(() => Array(width).fill(0));
 }
 
+export function createRandomBoard(width: number, height: number): gameBoard {
+  const randValue = () => {
+    const threshold = Math.random();
+    return Math.random() < threshold ? 0 : 1;
+  };
+  return Array(height)
+    .fill(0)
+    .map(() =>
+      Array(width)
+        .fill(0)
+        .map(() => randValue())
+    );
+}
+
 export class Cell {
   private board: gameBoard;
   private row: number;

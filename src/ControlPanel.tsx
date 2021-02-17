@@ -9,6 +9,7 @@ type ControlPanelProps = {
   clearBoard: () => void;
   speedFactor: number;
   setSpeedFactor: (speedFactor: number) => void;
+  randomizeBoard: () => void;
 };
 
 function ControlPanel({
@@ -19,6 +20,7 @@ function ControlPanel({
   clearBoard,
   speedFactor,
   setSpeedFactor,
+  randomizeBoard,
 }: ControlPanelProps) {
   return (
     <div className="control-panel">
@@ -29,6 +31,7 @@ function ControlPanel({
         {isPlaying ? "Pause" : "Play"}
       </button>
       <button onClick={clearBoard}>Clear</button>
+      <button onClick={randomizeBoard}>Randomize</button>
       <label htmlFor="speed">Speed:</label>
       <input
         type="range"

@@ -4,6 +4,7 @@ import {
   cellValue,
   updateBoard,
   createEmptyBoard,
+  createRandomBoard,
 } from "./lib/game-board";
 import Board from "./Board";
 import ControlPanel from "./ControlPanel";
@@ -41,6 +42,12 @@ function App() {
     pauseGame();
   }
 
+  function randomizeBoard(): void {
+    setBoard(createRandomBoard(BOARD_SIZE, BOARD_SIZE));
+    setTickCount(0);
+    pauseGame();
+  }
+
   useEffect(() => {
     let interval: number = 0;
     const intervalTime = 1000 * Math.pow(0.7, speedFactor);
@@ -66,6 +73,7 @@ function App() {
         clearBoard={clearBoard}
         speedFactor={speedFactor}
         setSpeedFactor={setSpeedFactor}
+        randomizeBoard={randomizeBoard}
       />
     </div>
   );
