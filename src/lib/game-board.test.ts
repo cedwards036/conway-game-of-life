@@ -1,4 +1,11 @@
-import { nextBoard, gameBoard, Cell, updateBoard } from "./game-board";
+import {
+  nextBoard,
+  gameBoard,
+  Cell,
+  updateBoard,
+  boardToString,
+  deriveGameStateDesc,
+} from "./game-board";
 
 describe("nextBoard", () => {
   test("the next board of an empty board is an empty board", () => {
@@ -115,5 +122,57 @@ describe("updateBoard", () => {
     ];
     updateBoard(board, 1, 2, 1);
     expect(board[1][2]).toBe(0);
+  });
+});
+
+describe("boardToString", () => {
+  test("converts an empty board to an empty string", () => {
+    expect(boardToString([])).toEqual("");
+    expect(boardToString([[]])).toEqual("");
+  });
+
+  test("converts a non-empty board into a string of ones and zeros with periods separating the 'rows'", () => {
+    expect(
+      boardToString([
+        [0, 1, 1],
+        [1, 0, 1],
+      ])
+    ).toEqual("011.101");
+  });
+});
+
+describe("deriveGameState", () => {
+  test("game state is pregame if the history is empty", () => {
+    expect(deriveGameStateDesc({}, "101.111", 0)).toEqual({ name: "pregame" });
+  });
+
+  test("game state is ongoing if the current state has never happened before", () => {
+    expect(deriveGameStateDesc({ "101.001": 0 }, "101.111", 1)).toEqual({
+      name: "ongoing",
+    });
+  });
+
+  test("game state is dead with startTick equal to the current tick if the current state has no living cells", () => {
+    expect(
+      deriveGameStateDesc({ "000.000.000": 0 }, "000.000.000", 23)
+    ).toEqual({
+      name: "dead",
+      startTick: 23,
+    });
+  });
+
+  test("game state is stabilized with startTick = currentTick - 1 if the current state is the same as last tick", () => {
+    expect(deriveGameStateDesc({ "101.001": 1 }, "101.001", 2)).toEqual({
+      name: "stabilized",
+      startTick: 1,
+    });
+  });
+
+  test("game state is cycle with startTick = first occurance tick and endTick = current tick if the current state is the same as a state before the last state", () => {
+    expect(deriveGameStateDesc({ "101.001": 1 }, "101.001", 3)).toEqual({
+      name: "cycle",
+      startTick: 1,
+      length: 2,
+    });
   });
 });

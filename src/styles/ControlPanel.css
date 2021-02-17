@@ -1,13 +1,24 @@
+@import "common.css";
+
 .control-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-panel-row {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
   margin-top: 20px;
+  width: var(--board-width);
+  justify-content: space-between;
 }
 
-.control-panel button,
-input {
-  margin-right: 15px;
+.state-description {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  width: 100%;
 }

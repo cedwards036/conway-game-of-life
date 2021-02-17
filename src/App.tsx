@@ -5,6 +5,10 @@ import {
   updateBoard,
   createEmptyBoard,
   createRandomBoard,
+  boardToString,
+  deriveGameStateDesc,
+  stateHistory,
+  stateDesc,
 } from "./lib/game-board";
 import Board from "./Board";
 import ControlPanel from "./ControlPanel";
@@ -18,6 +22,24 @@ function App() {
   const [tickCount, setTickCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speedFactor, setSpeedFactor] = useState(5);
+  const [history, setHistory] = useState<stateHistory>({});
+  const [mostRecentStateDesc, setMostRecentStateDesc] = useState<stateDesc>({
+    name: "pregame",
+  });
+
+  const addCurrentStateToHistory = useCallback(() => {
+    const newHistory = { ...history };
+    newHistory[boardToString(board)] = tickCount;
+    const currentStateDesc = deriveGameStateDesc(
+      history,
+      boardToString(board),
+      tickCount
+    );
+    if (currentStateDesc.name !== mostRecentStateDesc.name) {
+      setMostRecentStateDesc(currentStateDesc);
+    }
+    setHistory(newHistory);
+  }, [history, board, tickCount, mostRecentStateDesc]);
 
   function toggleCell(cellRow: number, cellCol: number): void {
     const newValue: cellValue = board[cellRow][cellCol] === 1 ? 0 : 1;
@@ -25,9 +47,10 @@ function App() {
   }
 
   const updateGameState = useCallback(() => {
+    addCurrentStateToHistory();
     setBoard(nextBoard(board));
     setTickCount(tickCount + 1);
-  }, [tickCount, board]);
+  }, [tickCount, board, addCurrentStateToHistory]);
 
   function toggleIsPlaying() {
     setIsPlaying(!isPlaying);
@@ -38,15 +61,21 @@ function App() {
   }
 
   function clearBoard(): void {
+    clearHistory();
     setBoard(createEmptyBoard(BOARD_SIZE, BOARD_SIZE));
     setTickCount(0);
     pauseGame();
   }
 
   function randomizeBoard(): void {
+    clearHistory();
     setBoard(createRandomBoard(BOARD_SIZE, BOARD_SIZE));
     setTickCount(0);
     pauseGame();
+  }
+
+  function clearHistory(): void {
+    setHistory({});
   }
 
   useEffect(() => {
@@ -75,6 +104,7 @@ function App() {
         speedFactor={speedFactor}
         setSpeedFactor={setSpeedFactor}
         randomizeBoard={randomizeBoard}
+        gameStateDesc={mostRecentStateDesc}
       />
       <Footer />
     </div>

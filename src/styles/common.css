@@ -1,6 +1,7 @@
 :root {
   --cell-size: 40px;
-  --board-width: 15;
+  --board-cell-dim: 15;
+  --board-width: calc((var(--cell-size) + 1px) * var(--board-cell-dim));
 }
 
 @media only screen and (max-width: 700px) {

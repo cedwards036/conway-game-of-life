@@ -1,5 +1,11 @@
 export type cellValue = 0 | 1;
 export type gameBoard = cellValue[][];
+export type stateHistory = { [key: string]: number };
+export type stateDesc = {
+  name: "pregame" | "cycle" | "dead" | "stabilized" | "ongoing";
+  startTick?: number;
+  length?: number;
+};
 
 export function nextBoard(board: gameBoard): gameBoard {
   return board.map((row, i) =>
@@ -37,6 +43,36 @@ export function createRandomBoard(width: number, height: number): gameBoard {
         .fill(0)
         .map(() => randValue())
     );
+}
+
+export function boardToString(board: gameBoard): string {
+  return board.map((row) => row.join("")).join(".");
+}
+
+export function deriveGameStateDesc(
+  gameStateHistory: stateHistory,
+  currentState: string,
+  currentTick: number
+): stateDesc {
+  if (Object.keys(gameStateHistory).length === 0) {
+    return { name: "pregame" };
+  } else if (currentState.includes("1")) {
+    if (gameStateHistory.hasOwnProperty(currentState)) {
+      if (gameStateHistory[currentState] === currentTick - 1) {
+        return { name: "stabilized", startTick: currentTick - 1 };
+      } else {
+        return {
+          name: "cycle",
+          startTick: gameStateHistory[currentState],
+          length: currentTick - gameStateHistory[currentState],
+        };
+      }
+    } else {
+      return { name: "ongoing" };
+    }
+  } else {
+    return { name: "dead", startTick: currentTick };
+  }
 }
 
 export class Cell {
