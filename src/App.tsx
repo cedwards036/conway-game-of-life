@@ -8,6 +8,7 @@ import {
 } from "./lib/game-board";
 import Board from "./Board";
 import ControlPanel from "./ControlPanel";
+import Footer from "./Footer";
 import "./styles/App.css";
 
 const BOARD_SIZE = 15;
@@ -75,6 +76,7 @@ function App() {
         setSpeedFactor={setSpeedFactor}
         randomizeBoard={randomizeBoard}
       />
+      <Footer />
     </div>
   );
 }
