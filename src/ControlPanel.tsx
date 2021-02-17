@@ -1,5 +1,5 @@
 import React from "react";
-import "./ControlPanel.css";
+import "./styles/ControlPanel.css";
 
 type ControlPanelProps = {
   updateGameState: () => void;

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Cell.css";
+import "./styles/Cell.css";
 import { cellValue } from "./lib/game-board";
 
 export type toggleCellType = (cellRow: number, cellCol: number) => void;

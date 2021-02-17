@@ -7,7 +7,7 @@ import {
 } from "./lib/game-board";
 import Board from "./Board";
 import ControlPanel from "./ControlPanel";
-import "./App.css";
+import "./styles/App.css";
 
 const BOARD_SIZE = 15;
 

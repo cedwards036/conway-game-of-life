@@ -1,5 +1,5 @@
 import React from "react";
-import "./Board.css";
+import "./styles/Board.css";
 import Cell, { toggleCellType } from "./Cell";
 import { gameBoard } from "./lib/game-board";
 
