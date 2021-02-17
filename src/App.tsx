@@ -15,6 +15,7 @@ function App() {
   const [board, setBoard] = useState(createEmptyBoard(BOARD_SIZE, BOARD_SIZE));
   const [tickCount, setTickCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [speedFactor, setSpeedFactor] = useState(5);
 
   function toggleCell(cellRow: number, cellCol: number): void {
     const newValue: cellValue = board[cellRow][cellCol] === 1 ? 0 : 1;
@@ -42,15 +43,16 @@ function App() {
 
   useEffect(() => {
     let interval: number = 0;
+    const intervalTime = 1000 * Math.pow(0.7, speedFactor);
     if (isPlaying) {
       interval = window.setInterval(() => {
         updateGameState();
-      }, 500);
+      }, intervalTime);
     } else if (!isPlaying && tickCount !== 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, updateGameState, tickCount]);
+  }, [isPlaying, updateGameState, tickCount, speedFactor]);
 
   return (
     <div className="app">
@@ -62,6 +64,8 @@ function App() {
         isPlaying={isPlaying}
         toggleIsPlaying={toggleIsPlaying}
         clearBoard={clearBoard}
+        speedFactor={speedFactor}
+        setSpeedFactor={setSpeedFactor}
       />
     </div>
   );

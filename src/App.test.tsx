@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -34,7 +34,7 @@ test("clicking a cell while the game is playing pauses the game", () => {
   render(<App />);
   userEvent.click(screen.getByRole("button", { name: "Play" }));
   // @ts-ignore
-  act(() => jest.advanceTimersByTime(1500));
+  act(() => jest.advanceTimersByTime(504.21));
   userEvent.click(screen.getByTestId("c00"));
   expect(screen.getByRole("button", { name: "Play" })).toHaveTextContent(
     "Play"
@@ -65,7 +65,7 @@ test("clicking 'Play' button starts automatic updates to tick count and game sta
   userEvent.click(screen.getByTestId("c10"));
   userEvent.click(screen.getByRole("button", { name: "Play" }));
   // @ts-ignore
-  act(() => jest.advanceTimersByTime(500));
+  act(() => jest.advanceTimersByTime(168.07));
   expect(screen.getByTestId("tickCount")).toHaveTextContent("1");
   expect(screen.getByTestId("c11")).toHaveClass("alive");
 });
@@ -74,7 +74,7 @@ test("clicking 'Clear' button stops the game", () => {
   render(<App />);
   userEvent.click(screen.getByRole("button", { name: "Play" }));
   // @ts-ignore
-  act(() => jest.advanceTimersByTime(1500));
+  act(() => jest.advanceTimersByTime(504.21));
   userEvent.click(screen.getByRole("button", { name: "Clear" }));
   expect(screen.getByRole("button", { name: "Play" })).toHaveTextContent(
     "Play"
@@ -94,4 +94,19 @@ test("clicking 'Clear' button resets tick count to 0", () => {
   userEvent.click(screen.getByRole("button", { name: "Next State" }));
   userEvent.click(screen.getByRole("button", { name: "Clear" }));
   expect(screen.getByTestId("tickCount")).toHaveTextContent("0");
+});
+
+test("changing the speed factor affects the speed of the game", () => {
+  render(<App />);
+  fireEvent.change(screen.getByLabelText("Speed:"), {
+    target: {
+      value: 0,
+    },
+  });
+  userEvent.click(screen.getByTestId("c00"));
+  userEvent.click(screen.getByRole("button", { name: "Play" }));
+  // @ts-ignore
+  act(() => jest.advanceTimersByTime(1000));
+  expect(screen.getByTestId("tickCount")).toHaveTextContent("1");
+  expect(screen.getByTestId("c00")).not.toHaveClass("alive");
 });

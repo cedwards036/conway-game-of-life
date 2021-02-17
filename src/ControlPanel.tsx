@@ -7,6 +7,8 @@ type ControlPanelProps = {
   isPlaying: boolean;
   toggleIsPlaying: () => void;
   clearBoard: () => void;
+  speedFactor: number;
+  setSpeedFactor: (speedFactor: number) => void;
 };
 
 function ControlPanel({
@@ -15,6 +17,8 @@ function ControlPanel({
   isPlaying,
   toggleIsPlaying,
   clearBoard,
+  speedFactor,
+  setSpeedFactor,
 }: ControlPanelProps) {
   return (
     <div className="control-panel">
@@ -25,6 +29,15 @@ function ControlPanel({
         {isPlaying ? "Pause" : "Play"}
       </button>
       <button onClick={clearBoard}>Clear</button>
+      <label htmlFor="speed">Speed:</label>
+      <input
+        type="range"
+        id="speed"
+        min="0"
+        max="9"
+        value={speedFactor}
+        onChange={(e) => setSpeedFactor(parseInt(e.target.value))}
+      ></input>
       <div data-testid="tickCount">Generation: {tickCount}</div>
     </div>
   );
