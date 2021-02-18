@@ -31,13 +31,14 @@ function App() {
     const newHistory = { ...history };
     newHistory[boardToString(board)] = tickCount;
     const currentStateDesc = deriveGameStateDesc(
-      history,
-      boardToString(board),
-      tickCount
+      newHistory,
+      boardToString(nextBoard(board)),
+      tickCount + 1
     );
     if (currentStateDesc.name !== mostRecentStateDesc.name) {
       setMostRecentStateDesc(currentStateDesc);
     }
+    console.log(history, newHistory, mostRecentStateDesc, currentStateDesc);
     setHistory(newHistory);
   }, [history, board, tickCount, mostRecentStateDesc]);
 
