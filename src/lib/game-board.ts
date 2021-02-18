@@ -82,16 +82,12 @@ export class Cell {
 
   constructor(board: gameBoard, row: number, col: number) {
     this.board = board;
-    this.row = row;
-    this.col = col;
+    this.row = this.calculateRealRow(row);
+    this.col = this.calculateRealCol(col);
   }
 
   get value(): cellValue {
-    if (this.coordinatesAreInvalid) {
-      return 0;
-    } else {
-      return this.board[this.row][this.col];
-    }
+    return this.board[this.row][this.col];
   }
 
   get isAlive(): boolean {
@@ -120,6 +116,18 @@ export class Cell {
       new Cell(this.board, this.row - 1, this.col - 1).value +
       new Cell(this.board, this.row + 1, this.col - 1).value
     );
+  }
+
+  private calculateRealRow(row: number): number {
+    return this.calculateWrapAroundIndex(row, this.board.length);
+  }
+
+  private calculateRealCol(col: number): number {
+    return this.calculateWrapAroundIndex(col, this.board[0].length);
+  }
+
+  private calculateWrapAroundIndex(index: number, length: number): number {
+    return ((index % length) + length) % length;
   }
 
   private cellIsAliveNextTick(): boolean {

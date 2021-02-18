@@ -63,21 +63,21 @@ test("Any living cell with more than three live neighbors dies", () => {
 
 test("Any dead cell with three live neighbors becomes alive", () => {
   const board: gameBoard = [
-    [1, 1, 0],
-    [1, 1, 0],
+    [0, 1, 0],
     [1, 0, 0],
+    [0, 1, 0],
   ];
-  expect(nextBoard(board)[2][1]).toBe(1);
+  expect(nextBoard(board)[1][1]).toBe(1);
 });
 
 describe("Cell.liveNeighborCount", () => {
-  test("returns 0 when cell coordinates are invalid", () => {
-    expect(new Cell([], 0, 0).liveNeighborCount).toBe(0);
-    expect(new Cell([[]], 0, 0).liveNeighborCount).toBe(0);
-  });
-
   test("returns 0 when cell has no living neighbors", () => {
-    expect(new Cell([[0]], 0, 0).liveNeighborCount).toBe(0);
+    const board: gameBoard = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+    ];
+    expect(new Cell(board, 1, 1).liveNeighborCount).toBe(0);
   });
 
   test("counts live neighbors directly above and beside the given cell", () => {
@@ -98,6 +98,52 @@ describe("Cell.liveNeighborCount", () => {
     expect(new Cell(board, 1, 1).liveNeighborCount).toBe(4);
   });
 
+  test("counts wrap-around neighbors to the right", () => {
+    const board: gameBoard = [
+      [0, 0, 0],
+      [1, 0, 1],
+      [0, 0, 0],
+    ];
+    expect(new Cell(board, 1, 2).liveNeighborCount).toBe(1);
+  });
+
+  test("counts wrap-around neighbors to the left", () => {
+    const board: gameBoard = [
+      [0, 0, 0],
+      [1, 0, 1],
+      [0, 0, 0],
+    ];
+    expect(new Cell(board, 1, 0).liveNeighborCount).toBe(1);
+  });
+
+  test("counts wrap-around neighbors above", () => {
+    const board: gameBoard = [
+      [1, 0, 0],
+      [0, 0, 0],
+      [1, 0, 0],
+    ];
+    expect(new Cell(board, 0, 0).liveNeighborCount).toBe(1);
+  });
+
+  test("counts wrap-around neighbors below", () => {
+    const board: gameBoard = [
+      [1, 0, 0],
+      [0, 0, 0],
+      [1, 0, 0],
+    ];
+    expect(new Cell(board, 2, 0).liveNeighborCount).toBe(1);
+  });
+
+  test("counts diagonal wrap-around neighbors below", () => {
+    const board: gameBoard = [
+      [0, 0, 1],
+      [0, 0, 0],
+      [1, 0, 1],
+    ];
+    expect(new Cell(board, 0, 1).liveNeighborCount).toBe(3);
+    expect(new Cell(board, 0, 2).liveNeighborCount).toBe(2);
+  });
+
   test("neighbors outside of the array bounds count as 0", () => {
     const board: gameBoard = [[0]];
     expect(new Cell(board, 0, 0).liveNeighborCount).toBe(0);
@@ -114,7 +160,7 @@ describe("updateBoard", () => {
     expect(updateBoard(board, 1, 2, 1)[1][2]).toBe(1);
   });
 
-  test("returns a copy of the original board", () => {
+  test("returns an updated *copy* of the original board", () => {
     const board: gameBoard = [
       [1, 0, 1],
       [0, 1, 0],
