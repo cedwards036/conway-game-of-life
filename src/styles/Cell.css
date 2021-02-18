@@ -9,5 +9,5 @@
 }
 
 .alive {
-  background-color: green;
+  background-color: var(--green);
 }

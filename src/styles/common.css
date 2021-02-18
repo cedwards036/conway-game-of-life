@@ -2,16 +2,21 @@
   --cell-size: 40px;
   --board-cell-dim: 15;
   --board-width: calc((var(--cell-size) + 1px) * var(--board-cell-dim));
+  --green: #39833b;
+  --dark-green: #1d5c1f;
+  --button-padding: 15px 32px;
 }
 
 @media only screen and (max-width: 700px) {
   :root {
     --cell-size: 30px;
+    --button-padding: 15px 25px;
   }
 }
 
 @media only screen and (max-width: 500px) {
   :root {
     --cell-size: 20px;
+    --button-padding: 12px 9px;
   }
 }
