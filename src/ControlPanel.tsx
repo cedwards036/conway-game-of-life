@@ -15,23 +15,37 @@ type ControlPanelProps = {
 };
 
 function GameState({ gameStateDesc }: { gameStateDesc: stateDesc }) {
-  function descriptionText(): string {
+  function getDescription(): { text: string; class: string } {
     switch (gameStateDesc.name) {
       case "pregame":
-        return "The game hasn't started yet";
+        return { text: "The game hasn't started yet", class: "pregame" };
       case "ongoing":
-        return "This pattern is evolving";
+        return { text: "This pattern is evolving", class: "ongoing" };
       case "dead":
-        return `This pattern died at generation ${gameStateDesc.startTick}`;
+        return {
+          text: `This pattern died at generation ${gameStateDesc.startTick}`,
+          class: "dead",
+        };
       case "stabilized":
-        return `This pattern stabilized at generation ${gameStateDesc.startTick}`;
+        return {
+          text: `This pattern stabilized at generation ${gameStateDesc.startTick}`,
+          class: "stabilized",
+        };
       case "cycle":
-        return `This pattern developed into a cycle at generation ${gameStateDesc.startTick} with period length ${gameStateDesc.length}`;
+        return {
+          text: `This pattern developed into a cycle at generation ${gameStateDesc.startTick} with period length ${gameStateDesc.length}`,
+          class: "cycle",
+        };
       default:
-        return "";
+        return { text: "", class: "" };
     }
   }
-  return <div className="state-description">{descriptionText()}</div>;
+  const description = getDescription();
+  return (
+    <div className={`state-description ${description.class}`}>
+      {description.text}
+    </div>
+  );
 }
 
 function ControlPanel({

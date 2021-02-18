@@ -22,3 +22,28 @@
   text-align: center;
   width: 100%;
 }
+
+.pregame {
+  color: gray;
+  border-color: gray;
+}
+
+.ongoing {
+  color: green;
+  border-color: green;
+}
+
+.dead {
+  color: red;
+  border-color: red;
+}
+
+.stabilized {
+  color: blue;
+  border-color: blue;
+}
+
+.cycle {
+  color: purple;
+  border-color: purple;
+}
