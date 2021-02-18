@@ -110,3 +110,18 @@ test("changing the speed factor affects the speed of the game", () => {
   expect(screen.getByTestId("tickCount")).toHaveTextContent("1");
   expect(screen.getByTestId("c00")).not.toHaveClass("alive");
 });
+
+test("advancing the game state updates the state description", () => {
+  render(<App />);
+  userEvent.click(screen.getByTestId("c00"));
+  userEvent.click(screen.getByTestId("c01"));
+  userEvent.click(screen.getByTestId("c10"));
+  userEvent.click(screen.getByRole("button", { name: "Next State" }));
+  expect(screen.getByText("This pattern is evolving")).toBeTruthy();
+  userEvent.click(screen.getByRole("button", { name: "Next State" }));
+  expect(
+    screen.getByText("This pattern stabilized at generation 1")
+  ).toBeTruthy();
+  userEvent.click(screen.getByRole("button", { name: "Clear" }));
+  expect(screen.getByText("The game hasn't started yet")).toBeTruthy();
+});

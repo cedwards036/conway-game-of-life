@@ -38,7 +38,6 @@ function App() {
     if (currentStateDesc.name !== mostRecentStateDesc.name) {
       setMostRecentStateDesc(currentStateDesc);
     }
-    console.log(history, newHistory, mostRecentStateDesc, currentStateDesc);
     setHistory(newHistory);
   }, [history, board, tickCount, mostRecentStateDesc]);
 
