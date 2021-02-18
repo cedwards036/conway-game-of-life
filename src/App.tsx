@@ -76,6 +76,7 @@ function App() {
 
   function clearHistory(): void {
     setHistory({});
+    setMostRecentStateDesc({ name: "pregame" });
   }
 
   useEffect(() => {
