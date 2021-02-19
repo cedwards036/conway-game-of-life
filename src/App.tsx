@@ -12,6 +12,7 @@ import {
 } from "./lib/game-board";
 import Board from "./Board";
 import ControlPanel from "./ControlPanel";
+import Blurb from "./Blurb";
 import Footer from "./Footer";
 import "./styles/App.css";
 
@@ -107,6 +108,7 @@ function App() {
         randomizeBoard={randomizeBoard}
         gameStateDesc={mostRecentStateDesc}
       />
+      <Blurb />
       <Footer />
     </div>
   );

@@ -1,0 +1,9 @@
+@import "common.css";
+
+.blurb {
+  width: var(--board-width);
+}
+
+.blurb h1 {
+  text-align: center;
+}
